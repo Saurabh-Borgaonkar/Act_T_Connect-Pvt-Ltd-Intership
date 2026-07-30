@@ -40,8 +40,26 @@ const register =async (req, res) => {
 };
 
 const login=async (req,res)=>{
-    const {name,password}=req.body;
-    
+    const {email,password}=req.body;
+        const isuserExist=await User.findOne({email});
+   if(!isuserExist){
+    return res.status(404).json({
+        success:false,
+        msg:"user not found"
+    })
+   }
+
+   const isMatchpwd=await bycryptjs.compare(password,isuserExist.password);
+   if(!isMatchpwd){
+    return res.status(401).json({
+        success:false,
+        msg:"wrong password"
+    })
+   }
+    return res.status(200).json({
+         success:true,
+        msg:"login succesfully"
+    });
 }
 
-module.exports = { register };
+module.exports = { register,login };
