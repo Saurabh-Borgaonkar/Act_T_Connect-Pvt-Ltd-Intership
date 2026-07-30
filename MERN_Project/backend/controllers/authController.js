@@ -1,6 +1,6 @@
 const User=require("../models/User");
 const bycryptjs=require("bcryptjs");
-
+const jwt=require("jsonwebtoken");
 const register =async (req, res) => {
     const {name,email,password,role}=req.body;
     // console.log(req.body);
@@ -48,6 +48,15 @@ const login=async (req,res)=>{
         msg:"user not found"
     })
    }
+   const token=jwt.sign({
+    id:isuserExist._id,
+    role:isuserExist.role
+   },
+   process.env.JWT_SECRET,
+   {
+    expiresIn:"1d"
+   }
+);
 
    const isMatchpwd=await bycryptjs.compare(password,isuserExist.password);
    if(!isMatchpwd){
@@ -58,7 +67,8 @@ const login=async (req,res)=>{
    }
     return res.status(200).json({
          success:true,
-        msg:"login succesfully"
+        msg:"login succesfully",
+        token
     });
 }
 
