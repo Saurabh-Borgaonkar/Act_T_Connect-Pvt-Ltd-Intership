@@ -72,4 +72,21 @@ const login=async (req,res)=>{
     });
 }
 
-module.exports = { register,login };
+
+const getUsers=async (req,res)=>{
+    const users=await User.find();
+    if(!users){
+       return res.status().json({
+            msg:"users not available"
+        })
+    }
+    return res.status().json({
+        msg:"find all users",
+        users
+    })
+}
+
+const deleteUser=async (req,res)=>{
+    console.log("deelete users");
+}
+module.exports = { register,login,getUsers,deleteUser};
