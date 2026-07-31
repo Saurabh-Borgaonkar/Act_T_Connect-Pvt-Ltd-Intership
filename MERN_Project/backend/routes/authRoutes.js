@@ -11,8 +11,15 @@ const adminMiddleware=require("../middleware/adminMiddleware")
 //         user: req.user
 //     });
 // });
-router.delete("/delete-user",authMiddleware,adminMiddleware,authController.deleteUser)
-router.get("/users",authController.getUsers);
+// router.delete("/delete-user",authMiddleware,adminMiddleware,authController.deleteUser)
+// router.get("/users",authController.getUsers);
+
+router.delete(
+  "/delete-user",
+  authMiddleware,
+  adminMiddleware,
+  authController.deleteUser
+);
 router.post("/register",authController.register);
 router.post("/login",authController.login);
 module.exports=router;

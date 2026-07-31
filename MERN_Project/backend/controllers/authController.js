@@ -42,13 +42,26 @@ const register =async (req, res) => {
 const login=async (req,res)=>{
     const {email,password}=req.body;
         const isuserExist=await User.findOne({email});
-   if(!isuserExist){
+   //if user not found then 
+        if(!isuserExist){
     return res.status(404).json({
         success:false,
         msg:"user not found"
     })
    }
-   const token=jwt.sign({
+//   console.log("Entered Password:", password);
+// console.log("Stored Password:", isuserExist.password);
+//this code compare the hashed password with user password
+   const isMatchpwd=await bycryptjs.compare(password,isuserExist.password);
+   if(!isMatchpwd){
+    return res.status(401).json({
+        success:false,
+        msg:"wrong password"
+    })
+   }
+//    console.log("User Role:", isuserExist.role);
+   //for generating jwt token
+    const token=jwt.sign({
     id:isuserExist._id,
     role:isuserExist.role
    },
@@ -58,13 +71,6 @@ const login=async (req,res)=>{
    }
 );
 
-   const isMatchpwd=await bycryptjs.compare(password,isuserExist.password);
-   if(!isMatchpwd){
-    return res.status(401).json({
-        success:false,
-        msg:"wrong password"
-    })
-   }
     return res.status(200).json({
          success:true,
         msg:"login succesfully",
@@ -73,20 +79,23 @@ const login=async (req,res)=>{
 }
 
 
-const getUsers=async (req,res)=>{
-    const users=await User.find();
-    if(!users){
-       return res.status().json({
-            msg:"users not available"
-        })
-    }
-    return res.status().json({
-        msg:"find all users",
-        users
-    })
-}
+// const getUsers=async (req,res)=>{
+//     const users=await User.find();
+//     if(!users){
+//        return res.status().json({
+//             msg:"users not available"
+//         })
+//     }
+//     return res.status().json({
+//         msg:"find all users",
+//         users
+//     })
+// }
 
 const deleteUser=async (req,res)=>{
-    console.log("deelete users");
+      return res.status(200).json({
+        success: true,
+        msg: "User deleted successfully"
+    });
 }
-module.exports = { register,login,getUsers,deleteUser};
+module.exports = { register,login,deleteUser};

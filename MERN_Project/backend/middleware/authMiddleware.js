@@ -1,10 +1,11 @@
 const jwt=require("jsonwebtoken");
 
 const authMiddleware=(req,res,next)=>{
+    
     try{
         // this code checks if the token is valid mean user is authenticated
         const authHeader=req.headers.authorization;
-        console.log(authHeader,"missing");
+        // console.log(authHeader,"missing");
         if (!authHeader) {
     return res.status(401).json({
 
@@ -17,8 +18,8 @@ const authMiddleware=(req,res,next)=>{
 
         const decoded = jwt.verify(token,process.env.JWT_SECRET);
 
+        // console.log("Decoded Token:", decoded);
         req.user = decoded;
-
         next();
     }catch(error){
           return res.status(401).json({
