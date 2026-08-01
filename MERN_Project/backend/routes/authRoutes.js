@@ -3,23 +3,12 @@ const authController=require("../controllers/authController")
 const router=express.Router();
 const authMiddleware=require("../middleware/authMiddleware")
 const adminMiddleware=require("../middleware/adminMiddleware")
+const userController=require("../controllers/userdataController")
 
-// router.get("/profile", authMiddleware, (req, res) => {
-//     res.status(200).json({
-//         success: true,
-//         message: "Profile Accessed",
-//         user: req.user
-//     });
-// });
-// router.delete("/delete-user",authMiddleware,adminMiddleware,authController.deleteUser)
-// router.get("/users",authController.getUsers);
-
-router.delete(
-  "/delete-user",
-  authMiddleware,
-  adminMiddleware,
-  authController.deleteUser
-);
 router.post("/register",authController.register);
 router.post("/login",authController.login);
+router.get("/users",authMiddleware,adminMiddleware,userController.getUsers);
+router.delete("/delete-user/:id",authMiddleware,adminMiddleware,userController.deleteUserById);
+router.put("/update-user/:id",authMiddleware,adminMiddleware,userController.updateUserById);
+router.get("/get-user/:id",authMiddleware,adminMiddleware,userController.getUserbyId);
 module.exports=router;

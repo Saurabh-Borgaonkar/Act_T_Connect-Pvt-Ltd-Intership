@@ -28,7 +28,7 @@ const register =async (req, res) => {
         name,
         email,
         password:hashedPwd,
-        role
+        role:"student"
     })
 
     //201 define succefully work done
@@ -49,6 +49,7 @@ const login=async (req,res)=>{
         msg:"user not found"
     })
    }
+   console.log(isuserExist.role);
 //   console.log("Entered Password:", password);
 // console.log("Stored Password:", isuserExist.password);
 //this code compare the hashed password with user password
@@ -77,25 +78,4 @@ const login=async (req,res)=>{
         token
     });
 }
-
-
-// const getUsers=async (req,res)=>{
-//     const users=await User.find();
-//     if(!users){
-//        return res.status().json({
-//             msg:"users not available"
-//         })
-//     }
-//     return res.status().json({
-//         msg:"find all users",
-//         users
-//     })
-// }
-
-const deleteUser=async (req,res)=>{
-      return res.status(200).json({
-        success: true,
-        msg: "User deleted successfully"
-    });
-}
-module.exports = { register,login,deleteUser};
+module.exports = { register,login};
