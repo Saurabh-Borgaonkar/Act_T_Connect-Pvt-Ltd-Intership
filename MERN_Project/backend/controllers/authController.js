@@ -59,7 +59,7 @@ const login=async (req,res)=>{
         success:false,
         msg:"wrong password"
     })
-   }
+   } 
 //    console.log("User Role:", isuserExist.role);
    //for generating jwt token
     const token=jwt.sign({
@@ -75,7 +75,8 @@ const login=async (req,res)=>{
     return res.status(200).json({
          success:true,
         msg:"login succesfully",
-        token
+        token,
+        isuserExist
     });
 }
 module.exports = { register,login};
