@@ -1,12 +1,15 @@
 import {  useState } from 'react';
 import axios from 'axios';
+import {useContext} from "react";
+import { AuthContext } from '../context/Authcontext';
 const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
 //const [updatedUser, setUpdatedUser] = useState({ name: '',email: '',role: ''});
     const [selectedUser, setSelectedUser] = useState({ name: '',email: '',role: ''});
+    const {token,user}=useContext(AuthContext);
         const fetchUsers = async () => {
             try {
-                const token = localStorage.getItem("token");
+                // const token = localStorage.getItem("token");
                 const response = await axios.get("http://localhost:3000/auth/users", {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -20,7 +23,7 @@ const AdminDashboard = () => {
         };
         const deleteUser = async (Id) => {
             try{
-                const token=localStorage.getItem("token");
+                // const token=localStorage.getItem("token");
                 await axios.delete(`http://localhost:3000/auth/delete-user/${Id}`,{
                     headers:{
                         Authorization:`Bearer ${token}`
@@ -37,7 +40,7 @@ const AdminDashboard = () => {
             try{
                 await axios.put(`http://localhost:3000/auth/update-user/${selectedUser._id}`,selectedUser,{
                     headers:{
-                        Authorization:`Bearer ${localStorage.getItem("token")}`
+                        Authorization:`Bearer ${token}`
                     }
                 });
                 fetchUsers(); // Refresh the users list
@@ -53,7 +56,7 @@ const AdminDashboard = () => {
     <div className="flex justify-between items-center mb-8">
       <div>
         <h1 className="text-3xl font-semibold text-slate-800">
-          Admin Dashboard
+          Admin Dashboard {user.name}
         </h1>
         <p className="text-slate-500 mt-1">
           Manage users and roles

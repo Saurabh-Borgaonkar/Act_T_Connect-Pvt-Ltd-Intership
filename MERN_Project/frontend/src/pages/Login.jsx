@@ -3,17 +3,21 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/Authcontext";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const {login } = useContext(AuthContext);
     const handleSubmit = async (e) => {
     e.preventDefault();
     // Perform login logic here, e.g., send a request to the server
    try{
     const response = await  axios.post("http://localhost:3000/auth/login",{email,password})
-    localStorage.setItem("token",response.data.token);
+    // localStorage.setItem("token",response.data.token);
+    login(response.data.token,response.data.user); //basically i have used context api to store the token in the local storage and also in the context api so that we can use it in other components
     console.log(response.data);
     if(response.data.isuserExist.role==="admin"){
       navigate("/admin/dashboard");
