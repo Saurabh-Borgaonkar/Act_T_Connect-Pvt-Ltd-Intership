@@ -6,7 +6,7 @@ const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
 //const [updatedUser, setUpdatedUser] = useState({ name: '',email: '',role: ''});
     const [selectedUser, setSelectedUser] = useState({ name: '',email: '',role: ''});
-    const {token,user}=useContext(AuthContext);
+    const {token}=useContext(AuthContext);
         const fetchUsers = async () => {
             try {
                 // const token = localStorage.getItem("token");
@@ -56,7 +56,7 @@ const AdminDashboard = () => {
     <div className="flex justify-between items-center mb-8">
       <div>
         <h1 className="text-3xl font-semibold text-slate-800">
-          Admin Dashboard {user.name}
+          Admin Dashboard
         </h1>
         <p className="text-slate-500 mt-1">
           Manage users and roles
