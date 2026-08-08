@@ -5,17 +5,27 @@ export const AuthContext = createContext();
     
 const AuthProvider=({children})=>{
     const [token,setToken]=useState(localStorage.getItem("token")||"");
-  const [user, setUser] = useState(null);
-    const login=(token,user)=>{
-        localStorage.setItem("token",token);
-        setToken(token);
-        setUser(user);
-        console.log("Token:", token);
-console.log("User:", user);
-        // console.log(user);
-    }
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+});
+   const login = (token, user) => {
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
+
+    setToken(token);
+    setUser(user);
+};
+
+const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    setToken("");
+    setUser(null);
+};
     return (
-        <AuthContext.Provider value={{token,login,user}}>
+        <AuthContext.Provider value={{token,login,user,logout}}>
             {children}
         </AuthContext.Provider>
     )
